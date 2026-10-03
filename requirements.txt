@@ -1,0 +1,6 @@
+groq
+python-dotenv
+a2a-sdk
+mcp==1.30.0
+uvicorn
+starlette

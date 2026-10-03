@@ -1,0 +1,50 @@
+CITYMIND CITY KNOWLEDGE BASE
+
+ROAD INFORMATION
+
+Road A:
+Road A is a major city road.
+Road A should be avoided when blocked.
+Road A is an important emergency transportation corridor.
+
+Road B:
+Road B is an alternative route from the City Center toward the Hospital.
+Road B is generally suitable for emergency vehicles.
+Road B should be preferred when Road A is blocked.
+
+Road C:
+Road C experiences congestion during high traffic conditions.
+Road C should not be preferred for urgent emergency transportation
+when traffic exceeds 70 percent.
+
+
+WEATHER GUIDELINES
+
+Heavy rain:
+Heavy rain can reduce road safety and increase travel time.
+Emergency vehicles should use safer alternate routes when possible.
+
+Normal weather:
+Normal weather generally has minimal impact on emergency transportation.
+
+
+EMERGENCY GUIDELINES
+
+Accident:
+Accidents may require emergency medical and police response.
+Blocked roads near an accident can significantly delay emergency services.
+
+Emergency response:
+Emergency incidents should receive higher priority than normal traffic management.
+
+
+TRAFFIC GUIDELINES
+
+Traffic below 40 percent:
+Normal traffic conditions.
+
+Traffic between 40 and 70 percent:
+Moderate congestion.
+
+Traffic above 70 percent:
+High congestion. Emergency routes should prioritize roads with lower traffic.
