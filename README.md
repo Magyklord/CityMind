@@ -1,151 +1,72 @@
-# CityMind AI
+# CityMind — Agentic AI Smart City Operations
 
-## Agentic AI-Based Multi-Agent Framework for Autonomous Smart City Operations
-
-CityMind is an agentic AI system that uses multiple specialized AI agents to analyze smart-city situations and coordinate operational decisions.
-
-The system combines **multi-agent AI, Agent-to-Agent (A2A) communication, Model Context Protocol (MCP), Retrieval-Augmented Generation (RAG), dynamic agent selection, dynamic replanning, and human-in-the-loop approval**.
-
----
+CityMind is an Agentic AI-based smart city decision-support prototype. It uses specialized AI agents to analyze simulated traffic, weather, road-blockage, and emergency scenarios and generate a consolidated recommendation through a web dashboard.
 
 ## Features
 
-* **Multi-Agent System**
+- **Multi-agent system:** Traffic, Weather, and Emergency agents.
+- **Custom Python orchestration:** A planner selects relevant agents, an orchestrator coordinates their execution, and a supervisor synthesizes their findings.
+- **LLM integration:** Groq API with the `openai/gpt-oss-20b` model.
+- **MCP integration:** Tools for road-status checks, alternative routes, and emergency response-time estimates.
+- **A2A interface:** Demonstrates exposing the Traffic Agent as a separate service.
+- **RAG:** Retrieves relevant passages from a local city knowledge file.
+- **Replanning and approval checks:** Includes basic workflow reconsideration and rule-based approval logic.
+- **Web dashboard:** FastAPI-based interface for submitting scenarios and viewing structured recommendations.
+- **Metrics:** Tracks selected workflow activity.
 
-  * Traffic Agent
-  * Weather Agent
-  * Emergency Agent
-  * City Supervisor
+## Architecture
 
-* **Dynamic Agent Selection**
+1. The user submits a city scenario through the website.
+2. The planner identifies relevant agents.
+3. The orchestrator coordinates the agents and collects their reports.
+4. The specialist agents analyze traffic, weather, and emergency conditions.
+5. MCP tools provide predefined road, route, and response-time information.
+6. RAG retrieves relevant information from the local knowledge base.
+7. The supervisor combines the available findings into a recommendation.
+8. Replanning and approval components perform their implemented checks.
+9. The presentation formatter structures the results.
+10. The dashboard displays the recommendation and supporting information.
 
-  * A planning agent determines which specialist agents are relevant to the current situation.
+The main workflow uses custom Python orchestration. MCP provides tool integration, while A2A is demonstrated through the Traffic Agent interface; the entire workflow does not use A2A for every agent interaction.
 
-* **A2A Communication**
+## Technology Stack
 
-  * Enables communication between agents using the Agent-to-Agent protocol.
-
-* **MCP Integration**
-
-  * Provides operational tools for:
-
-    * Road status
-    * Alternate route selection
-    * Emergency response estimation
-
-* **RAG**
-
-  * Retrieves relevant information from a city knowledge base before the supervisor makes a decision.
-
-* **Dynamic Replanning**
-
-  * Evaluates whether an existing response should be changed when the situation changes.
-
-* **Human-in-the-Loop**
-
-  * High-risk actions can require human approval before proceeding.
-
-* **System Metrics**
-
-  * Tracks:
-
-    * Selected agents
-    * Agent calls
-    * MCP tool calls
-    * Replanning events
-    * Approval events
-    * Runtime
-
----
-
-## System Architecture
-
-```text
-                         USER
-                           │
-                           ▼
-                    CITYMIND SYSTEM
-                           │
-                           ▼
-                       PLANNER
-                           │
-             ┌─────────────┼─────────────┐
-             ▼             ▼             ▼
-        TRAFFIC         WEATHER       EMERGENCY
-         AGENT            AGENT          AGENT
-             │             │             │
-             └─────────────┼─────────────┘
-                           │
-                          A2A
-                           │
-                           ▼
-                     CITY SUPERVISOR
-                       │         │
-                       │         │
-                      MCP       RAG
-                       │         │
-                       └────┬────┘
-                            │
-                            ▼
-                    FINAL DECISION
-                            │
-                            ▼
-                   HUMAN APPROVAL
-                            │
-                            ▼
-                       ACTION / END
-```
-
----
-
-## Technologies Used
-
-* Python
-* Groq API
-* A2A SDK
-* Model Context Protocol (MCP)
-* Retrieval-Augmented Generation (RAG)
-* JSON-based agent communication
-* Local knowledge base
-
----
+- Python
+- FastAPI and Uvicorn
+- Groq API
+- GPT-OSS 20B
+- MCP (Model Context Protocol)
+- A2A (Agent-to-Agent)
+- HTML, CSS, and JavaScript
 
 ## Project Structure
 
 ```text
-CityMind_v2/
-│
-├── a2a_agents/
-│   ├── __init__.py
-│   ├── traffic_executor.py
-│   └── traffic_server.py
-│
+CityMind/
 ├── agents/
-│   ├── __init__.py
-│   ├── approval.py
+│   ├── planner.py
+│   ├── orchestrator.py
+│   ├── traffic.py
+│   ├── weather.py
 │   ├── emergency.py
+│   ├── supervisor.py
+│   ├── replanner.py
+│   ├── approval.py
 │   ├── llm_client.py
 │   ├── mcp_client.py
-│   ├── orchestrator.py
-│   ├── planner.py
 │   ├── rag.py
-│   ├── replanner.py
-│   ├── supervisor.py
-│   ├── traffic.py
-│   └── weather.py
-│
+│   └── presentation_formatter.py
+├── a2a_agents/
+│   ├── traffic_server.py
+│   └── traffic_executor.py
 ├── core/
-│   ├── __init__.py
-│   ├── metrics.py
-│   └── state.py
-│
+│   ├── state.py
+│   └── metrics.py
 ├── knowledge/
 │   └── city_knowledge.txt
-│
 ├── tools/
-│   ├── __init__.py
 │   └── city_tools.py
-│
+├── api.py
 ├── citymind.py
 ├── mcp_server.py
 ├── requirements.txt
@@ -153,164 +74,108 @@ CityMind_v2/
 └── .gitignore
 ```
 
----
+## Requirements
 
-## Installation
+- Python 3.10 or newer recommended.
+- A Groq API key.
+- Internet access for package installation and hosted LLM inference.
+
+## Installation and Setup
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/CityMind.git
+git clone YOUR_GITHUB_REPOSITORY_URL
 cd CityMind
 ```
 
+Replace the repository URL with your actual GitHub URL.
+
 ### 2. Create a virtual environment
 
-Windows:
+On Windows PowerShell:
 
 ```powershell
-python -m venv venv
-```
-
-Activate it:
-
-```powershell
+py -m venv venv
 .\venv\Scripts\Activate.ps1
 ```
 
 ### 3. Install dependencies
 
 ```powershell
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4. Configure the Groq API key
+### 4. Configure the environment
 
-Create a `.env` file in the project root:
+Copy `.env.example` to `.env`:
 
-```env
-GROQ_API_KEY=your_groq_api_key_here
+```powershell
+Copy-Item .env.example .env
 ```
 
-Do not commit the `.env` file.
+Add your own Groq API key to `.env`:
 
----
+```dotenv
+GROQ_API_KEY=your_groq_api_key_here
+GROQ_MODEL=openai/gpt-oss-20b
+```
 
-## Running CityMind
+Never publish your real API key or commit the `.env` file.
 
-Run:
+### 5. Run the web application
+
+Start the FastAPI development server:
+
+```powershell
+uvicorn api:app --reload
+```
+
+Open the dashboard in your browser:
+
+**http://127.0.0.1:8000**
+
+Press `Ctrl+C` in the terminal to stop the server.
+
+### Terminal mode
+
+The project also contains `citymind.py`, which serves as a terminal entry point:
 
 ```powershell
 python citymind.py
 ```
 
-The system will ask for the current city scenario.
+## Example Use Case
 
-Example:
+Consider an emergency vehicle travelling to a hospital during heavy rain. The specialist agents analyze the supplied scenario, the tools provide available route information, and the supervisor combines the findings into a recommendation.
 
-```text
-===== CITYMIND SCENARIO =====
+The dashboard presents the recommended action, route details, estimated response time, risk information, reasoning, and next steps where available.
 
-City [Chennai]: Chennai
-State [Tamil Nadu]: Tamil Nadu
-Weather [Heavy rain]: Heavy rain
-Temperature (°C) [24]: 24
-Traffic level (%) [75]: 85
-Blocked road [Road A]: Road A
-Emergency active? [Y/n]: y
-Incident type [accident]: accident
-Incident location [Road A]: Anna Salai
-```
+The route data and response-time calculations in the current prototype are simulated or predefined. They are not live traffic measurements or validated emergency predictions.
 
-CityMind then:
+## Limitations
 
-1. Updates the current city state.
-2. Determines which specialist agents are required.
-3. Executes the selected agents.
-4. Uses MCP tools for operational information.
-5. Retrieves relevant information from the RAG knowledge base.
-6. Generates a supervisor decision.
-7. Checks whether human approval is required.
-8. Displays system metrics.
+- Uses simulated or predefined city data.
+- Does not control real traffic signals or dispatch emergency services.
+- Uses basic lexical matching for local knowledge retrieval.
+- Approval checks use simple rule-based phrase detection.
+- LLM-generated responses may contain errors.
+- The presentation formatter adds another LLM request.
+- The main workflow primarily uses direct Python orchestration, with A2A demonstrated through the Traffic Agent interface.
 
----
+## Future Enhancements
 
-## Example Workflow
+- Integrate live traffic and weather APIs.
+- Improve route optimization and knowledge retrieval.
+- Add stronger approval, validation, and error-handling mechanisms.
+- Expand A2A communication between independently deployed agents.
+- Evaluate recommendation accuracy and system performance.
 
-```text
-User Scenario
-      │
-      ▼
-Dynamic Planner
-      │
-      ▼
-Selected Specialist Agents
-      │
-      ├── Traffic Agent
-      ├── Weather Agent
-      └── Emergency Agent
-      │
-      ▼
-MCP Operational Tools
-      │
-      ▼
-RAG Knowledge Retrieval
-      │
-      ▼
-City Supervisor
-      │
-      ▼
-Risk Assessment
-      │
-      ▼
-Human Approval
-      │
-      ▼
-Final Decision
-```
+## Security
 
----
-
-## Human-in-the-Loop
-
-CityMind identifies potentially high-risk actions.
-
-Examples include:
-
-* Road closure
-* Traffic rerouting
-* Evacuation
-* System shutdown
-
-When such an action is proposed, the system requests human approval before proceeding.
-
----
-
-## Evaluation Metrics
-
-CityMind records basic runtime and system metrics including:
-
-* Number of selected agents
-* Number of agent calls
-* Number of MCP tool calls
-* Number of replanning events
-* Number of approval requests
-* Number of approvals
-* Number of rejections
-* Total execution time
-
-These metrics can be used to evaluate the behavior and performance of the multi-agent system.
-
----
-
-## Project Goal
-
-The goal of CityMind is to demonstrate how agentic AI can coordinate multiple specialized agents and external tools to reason about dynamic smart-city situations.
-
-The project focuses on **agent coordination and autonomous decision support**, while keeping high-risk operational actions subject to human approval.
-
----
+Keep API keys and other credentials out of source code and version control. If a key has been exposed publicly, revoke it and replace it.
 
 ## License
 
-This project was developed as an academic project.
+Add a license file if you intend to specify how others may use, modify, or distribute this project.
