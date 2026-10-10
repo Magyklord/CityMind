@@ -1,6 +1,15 @@
+# Core web application
+fastapi
+uvicorn[standard]
+pydantic
+
+# LLM and environment configuration
 groq
 python-dotenv
-a2a-sdk
+
+# Tool integration and agent communication
 mcp==1.30.0
-uvicorn
-starlette
+a2a-sdk
+
+# HTTP support used by API/agent integrations
+httpx
